@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void displayDataFromHabits() {
+    private Cursor displayDataFromHabits() {
         SQLiteDatabase database = habitDbHelper.getReadableDatabase();
         String finalData = null;
         String[] projection = {
@@ -73,5 +73,6 @@ public class MainActivity extends AppCompatActivity {
         } finally {
             cursor.close();
         }
+        return cursor;
     }
 }
