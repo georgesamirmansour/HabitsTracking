@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 String currentHabit = cursor.getString(habitColumnIndex);
                 int currentGender = cursor.getInt(genderColumnIndex);
             }
+            return cursor;
         } finally {
             cursor.close();
         }
-        return cursor;
     }
 }
