@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Cursor displayDataFromHabits() {
         SQLiteDatabase database = habitDbHelper.getReadableDatabase();
-        String finalData = null;
         String[] projection = {
                 HabitContract.HabitEntry._ID,
                 HabitContract.HabitEntry.COLUMN_NAME,
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 String currentName = cursor.getString(nameColumnIndex);
                 String currentHabit = cursor.getString(habitColumnIndex);
                 int currentGender = cursor.getInt(genderColumnIndex);
-                finalData = currentID + currentName + currentHabit + currentGender + "\n";
             }
         } finally {
             cursor.close();
