@@ -3,11 +3,8 @@ package com.example.gorgesamir.habitstracking;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.gorgesamir.habitstracking.DB.HabitContract;
 import com.example.gorgesamir.habitstracking.DB.HabitDbHelper;
@@ -21,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         insertIntoHabits();
-//        displayDataFromHabits();
+        displayDataFromHabits();
     }
 
 
@@ -35,23 +32,13 @@ public class MainActivity extends AppCompatActivity {
         contentValues.put(HabitContract.HabitEntry.COLUMN_GENDER, "male");
         contentValues.put(HabitContract.HabitEntry.COLUMN_NUMBER_OF_HABITS, 1);
 
-       Log.v("main_activity", "contentValues: " + contentValues);
-        long newRowId = database.insert(HabitContract.HabitEntry.TABLE_NAME, null, contentValues);
-        if (newRowId == -1) {
-            Toast.makeText(getApplicationContext(),
-                    "successfully added \t" + newRowId, Toast.LENGTH_SHORT).show();
-            Log.v("main_activity",
-                    "successfully added \t" + newRowId);
-        } else {
-            Log.v("main_activity",
-                    "error while adding \t" + newRowId);
-            Toast.makeText(getApplicationContext(),
-                    "error while adding \t" + newRowId, Toast.LENGTH_SHORT).show();
-        }
+        database.insert(HabitContract.HabitEntry.TABLE_NAME, null, contentValues);
     }
+
 
     public void displayDataFromHabits() {
         SQLiteDatabase database = habitDbHelper.getReadableDatabase();
+        String finalData = null;
         String[] projection = {
                 HabitContract.HabitEntry._ID,
                 HabitContract.HabitEntry.COLUMN_NAME,
@@ -68,14 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 , null
         );
         try {
-            TextView displayTextView = (TextView) findViewById(R.id.text_view_habits);
-            displayTextView.setText("Number of rows in DB is " + cursor.getCount());
-            displayTextView.append(HabitContract.HabitEntry._ID + " - " +
-                    HabitContract.HabitEntry.COLUMN_NAME + " - " +
-                    HabitContract.HabitEntry.COLUMN_HABIT + " - " +
-                    HabitContract.HabitEntry.COLUMN_GENDER + " - "
-                    + "\n"
-            );
+
 
             int idColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(HabitContract.HabitEntry.COLUMN_NAME);
@@ -88,10 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 String currentName = cursor.getString(nameColumnIndex);
                 String currentHabit = cursor.getString(habitColumnIndex);
                 int currentGender = cursor.getInt(genderColumnIndex);
-
-                displayTextView.append("\n" + currentID + " - " + currentName
-                        + " - " + currentHabit + " - " + currentGender
-                        + " - ");
+                finalData = currentID + currentName + currentHabit + currentGender + "\n";
             }
         } finally {
             cursor.close();
